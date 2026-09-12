@@ -1,0 +1,140 @@
+@import 'tailwindcss';
+
+/* Self-hosted so the site makes no third-party font requests.
+   Keeps the step-4 CSP tight: no fonts.googleapis.com, no fonts.gstatic.com. */
+@import '@fontsource/caprasimo/400.css';
+@import '@fontsource-variable/figtree/wght.css';
+
+/* ---------------------------------------------------------------
+   Design tokens — mapped 1:1 from the Figma variables in
+   Portfolio.fig › Style Guide. Figma name is noted beside each.
+   --------------------------------------------------------------- */
+@theme {
+  /* Colour — Figma "color/*" collection */
+  --color-ground: #2b1810; /* Coffee Bean  · color/orange/12 · page ground */
+  --color-panel: #3a2117; /* Tamarind     · color/orange/16 · cards, about band */
+  --color-panel-raised: #452a1d; /* derived           · hover fill for panels */
+  --color-accent: #e08a4f; /* Terracotta   · color/orange/59 */
+  --color-accent-ink: #2b1810; /* text that sits ON terracotta */
+  --color-ink: #f9f4ed; /* Merino       · color/grey/95 · headings */
+  --color-body: #dcd3c4; /* Sisal        · color/orange/82 · body copy */
+  --color-body-dim: #c0b6a5; /* Bison Hide   · color/orange/70 */
+  --color-muted: #a19786; /* Zorba        · color/orange/58 · labels, captions */
+
+  /* Hairlines — Figma "color/grey/95 N%" */
+  --color-hairline: rgb(249 244 237 / 0.12); /* Merino 12% · default rule */
+  --color-hairline-soft: rgb(249 244 237 / 0.08); /* Merino 8%  */
+  --color-hairline-strong: rgb(249 244 237 / 0.18); /* Merino 18% */
+  --color-accent-wash: rgb(224 138 79 / 0.14); /* Terracotta 14% · tag fill */
+
+  /* Type — Figma "font family/*" */
+  --font-display: 'Caprasimo', 'Bookman Old Style', Georgia, serif;
+  --font-sans:
+    'Figtree Variable', 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui,
+    sans-serif;
+
+  /* Type scale — Figma "font size/*" paired with its line height */
+  --text-display: 4.75rem; /* 76 / 79.8 · hero name */
+  --text-display--line-height: 1.05;
+  --text-h1: 2.5rem; /* 40 / 42   · hero sub-line */
+  --text-h1--line-height: 1.05;
+  --text-h2: 2rem; /* 32        · section headings */
+  --text-h2--line-height: 1.2;
+  --text-h3: 1.375rem; /* 22        · case-study titles */
+  --text-h3--line-height: 1.25;
+  --text-lead: 1.125rem; /* 18 / 28.8 · hero paragraph */
+  --text-lead--line-height: 1.6;
+  --text-body: 1.0625rem; /* 17 / 25.5 · about paragraphs */
+  --text-body--line-height: 1.5;
+  --text-sm: 0.875rem; /* 14 / 23.8 · card copy */
+  --text-sm--line-height: 1.7;
+  --text-xs: 0.8125rem; /* 13        · captions */
+  --text-xs--line-height: 1.5;
+  --text-label: 0.6875rem; /* 11        · eyebrows, kickers */
+  --text-label--line-height: 1.4;
+
+  /* Radius — Figma "corner radius/*" */
+  --radius-card: 1.25rem; /* 20px · case-study panels */
+  --radius-panel: 1.5rem; /* 24px · contact block */
+  --radius-pill: 999px; /* 999 · tags and buttons */
+
+  /* Motion — the two curves the whole site uses */
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out-quart: cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* ---------------------------------------------------------------
+   Base
+   --------------------------------------------------------------- */
+@layer base {
+  html {
+    /* Anchor links land below the always-visible header. */
+    scroll-padding-top: 6rem;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background-color: var(--color-ground);
+    color: var(--color-body);
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1,
+  h2,
+  h3 {
+    color: var(--color-ink);
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-accent-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Figures line up in the stat band and the year gutter. */
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  /* The page's single content measure — one place, not per-section. */
+  .shell {
+    width: 100%;
+    max-width: 90rem;
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+
+  @media (width >= 48rem) {
+    .shell {
+      padding-inline: 3.5rem;
+    }
+  }
+}
+
+/* ---------------------------------------------------------------
+   Global motion rule (step 3 builds on this)
+   Nothing is hidden at rest. If JS never runs, or the visitor has
+   reduced motion on, the page is still complete.
+   --------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
