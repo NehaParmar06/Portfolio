@@ -1,11 +1,12 @@
-@import 'tailwindcss';
-
-/* Tailwind scans the whole repo for class names, which means a stray HTML
-   file in docs/ can add utilities to the production stylesheet — the
-   social-card templates did exactly that, growing it by 30 bytes and
-   invalidating the CSP style hash. Documentation is not a source of truth
-   for what the site renders. */
-@source not '../../../docs';
+/* `source('../../')` scopes Tailwind's class detection to src/.
+ *
+ * By default it scans the entire repository, so any text file can add
+ * utilities to the production stylesheet: the social-card templates in
+ * docs/ did it, and so did a CI workflow YAML. That made the build
+ * non-deterministic across checkouts — a tree missing .github produced
+ * different CSS, and therefore a different CSP style hash, than one that
+ * had it. Only src/ decides what the site renders. */
+@import 'tailwindcss' source('../../');
 
 @import './fonts.css';
 @import './motion.css';
