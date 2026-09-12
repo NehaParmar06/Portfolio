@@ -20,22 +20,22 @@ library (Lenis), custom cursor / magnetic buttons, preloader.
 
 ## Per-moment decisions
 
-| ID  | Moment                   | Decision                                                                     |
-| --- | ------------------------ | ---------------------------------------------------------------------------- |
-| M1  | Hero entrance            | **Curtain lift** — each line rises out from behind a mask, 100ms apart        |
-| M2  | The word “clarity.”      | **Blur to focus** — resolves from blur, 200ms after its line lands            |
-| M3  | Sticky header            | **Always solid**, and always visible — never hides on scroll                  |
-| M4  | Stat band                | **Odometer roll** — each figure rolls up into place; no counting from zero    |
-| M5  | Work experience          | **Spine draws, rows follow** — terracotta rule scales down, then rows stagger |
-| M6  | Case-study cards reveal  | **Stagger fade-up**, 110ms apart, starting at `top 85%`                       |
-| M7  | Case-study card hover    | **Lift + chevron** — 4px lift, border warms, chevron nudges down              |
-| M8  | Tag chips                | **Pop stagger**, 55ms apart                                                   |
-| M9  | About portrait           | **Ring first, photo after** — ring draws, then the portrait fades up          |
-| M10 | “Let's talk.” panel      | **Scale in**, content +250ms                                                  |
-| M11 | Links & buttons          | **Underline sweep** — in from the left on hover, out to the right             |
-| M12 | Scroll feedback          | **None** — no progress bar, no section dots                                   |
-| M13 | Mobile menu              | **Fade + scale**, links stagger 60ms, focus trap + Esc to close               |
-| M14 | First paint              | **No preloader** — the page paints immediately                                |
+| ID  | Moment                  | Decision                                                                      |
+| --- | ----------------------- | ----------------------------------------------------------------------------- |
+| M1  | Hero entrance           | **Curtain lift** — each line rises out from behind a mask, 100ms apart        |
+| M2  | The word “clarity.”     | **Blur to focus** — resolves from blur, 200ms after its line lands            |
+| M3  | Sticky header           | **Always solid**, and always visible — never hides on scroll                  |
+| M4  | Stat band               | **Odometer roll** — each figure rolls up into place; no counting from zero    |
+| M5  | Work experience         | **Spine draws, rows follow** — terracotta rule scales down, then rows stagger |
+| M6  | Case-study cards reveal | **Stagger fade-up**, 110ms apart, starting at `top 85%`                       |
+| M7  | Case-study card hover   | **Lift + chevron** — 4px lift, border warms, chevron nudges down              |
+| M8  | Tag chips               | **Pop stagger**, 55ms apart                                                   |
+| M9  | About portrait          | **Ring first, photo after** — ring draws, then the portrait fades up          |
+| M10 | “Let's talk.” panel     | **Scale in**, content +250ms                                                  |
+| M11 | Links & buttons         | **Underline sweep** — in from the left on hover, out to the right             |
+| M12 | Scroll feedback         | **None** — no progress bar, no section dots                                   |
+| M13 | Mobile menu             | **Fade + scale**, links stagger 60ms, focus trap + Esc to close               |
+| M14 | First paint             | **No preloader** — the page paints immediately                                |
 
 ## Timing vocabulary
 

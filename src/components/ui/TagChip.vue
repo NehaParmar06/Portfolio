@@ -11,9 +11,7 @@ defineProps<{ tone: TagTone }>()
 <template>
   <span
     class="rounded-pill px-3 py-[5px] text-tag leading-none"
-    :class="
-      tone === 'tech' ? 'bg-accent-wash text-accent' : 'bg-hairline-soft text-body-dim'
-    "
+    :class="tone === 'tech' ? 'bg-accent-wash text-accent' : 'bg-hairline-soft text-body-dim'"
   >
     <slot />
   </span>

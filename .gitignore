@@ -35,3 +35,7 @@ pnpm-debug.log*
 
 # typescript build info
 *.tsbuildinfo
+.vscode/
+
+# copied in only to render the social cards (see docs/social/README.md)
+docs/social/*.woff2

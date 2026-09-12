@@ -18,7 +18,10 @@ import { experience } from '@/data/experience'
           {{ role.period }}
         </span>
         <div class="relative flex min-w-0 flex-1 flex-col gap-1.5 pl-[22px]">
-          <span class="spine absolute inset-y-0 left-0 w-0.5 bg-accent" aria-hidden="true"></span>
+          <span
+            class="spine absolute inset-y-0 left-0 w-0.5 bg-accent"
+            aria-hidden="true"
+          ></span>
           <h3 class="text-body font-semibold text-ink">
             {{ role.title }} — {{ role.company }}
           </h3>

@@ -12,7 +12,8 @@ export const experience: Role[] = [
     period: '2018–2021',
     title: 'Senior Frontend Developer',
     company: 'FIS Global',
-    summary: 'Led Angular/TypeScript development for large-scale financial services applications.',
+    summary:
+      'Led Angular/TypeScript development for large-scale financial services applications.',
   },
   {
     period: '2016–2018',

@@ -19,9 +19,17 @@ export const contact: ContactContent = {
   heading: "Let's talk.",
   body: "If you're building something interesting, solving a tricky problem, or looking for someone to build with — say hello.",
   links: [
-    { kind: 'linkedin', label: 'LinkedIn — nehaparmar06', href: 'https://www.linkedin.com/in/nehaparmar06' },
+    {
+      kind: 'linkedin',
+      label: 'LinkedIn — nehaparmar06',
+      href: 'https://www.linkedin.com/in/nehaparmar06',
+    },
     { kind: 'github', label: 'GitHub — nehaparmar06', href: 'https://github.com/nehaparmar06' },
-    { kind: 'figma', label: 'Figma — nehaparmar06', href: 'https://www.figma.com/@nehaparmar06' },
+    {
+      kind: 'figma',
+      label: 'Figma — nehaparmar06',
+      href: 'https://www.figma.com/@nehaparmar06',
+    },
   ],
 }
 

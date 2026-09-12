@@ -81,7 +81,8 @@ export const caseStudies: CaseStudy[] = [
         'Fourteen brands each needed their own mobile property-search app, and building fourteen apps fourteen times was not a plan.',
       approach:
         'I built one shared component pattern in Ionic 3 and AngularJS — search, filters and listing detail — themed per brand, so a change to the search experience landed everywhere at once.',
-      outcome: 'All 14 apps delivered solo inside a year, with a consistent experience across every brand.',
+      outcome:
+        'All 14 apps delivered solo inside a year, with a consistent experience across every brand.',
     },
     tags: [
       { label: 'Ionic 3', tone: 'tech' },

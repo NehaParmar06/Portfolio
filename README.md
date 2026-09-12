@@ -6,6 +6,8 @@ Personal portfolio for Neha Parmar, built from the Figma comp
 **Stack:** Vue 3 (`<script setup>`, Composition API) · TypeScript · Vite ·
 Tailwind CSS v4 · deployed on Vercel.
 
+[![CI](https://github.com/NehaParmar06/Portfolio/actions/workflows/ci.yml/badge.svg)](https://github.com/NehaParmar06/Portfolio/actions/workflows/ci.yml)
+
 **Measured on the production build** (Lighthouse, desktop):
 
 | Performance | Accessibility | Best practices | SEO |
@@ -21,12 +23,20 @@ requests, 0 third-party origins.
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
-npm run build    # type-check + production build into dist/
-npm run preview  # serve the production build locally
+npm run dev          # http://localhost:5173
+npm run build        # type-check + production build into dist/
+npm run preview      # serve the production build locally
+
+npm run lint         # eslint, including vuejs-accessibility rules
+npm run format       # prettier
+npm run type-check   # vue-tsc
+npm run audit:a11y   # serve dist/ with the real headers, then audit it
+npm run verify       # everything above, in the order CI runs it
+
+npm run csp:sync     # rewrite the CSP style hash in vercel.json — see below
 ```
 
-Node 20.19+ or 22.12+.
+Node 20.19+ (see `.nvmrc`).
 
 ---
 
@@ -67,7 +77,7 @@ src/
   draw, staggered reveals, hover states, the mobile sheet — is keyframes in
   `motion.css`. The only JavaScript involved is one shared
   IntersectionObserver that adds a class. See the note on GSAP below.
-- **Nothing is hidden at rest.** Reveals animate *from* a hidden state on
+- **Nothing is hidden at rest.** Reveals animate _from_ a hidden state on
   the way in; no element is parked at `opacity: 0` waiting on an observer.
   If JavaScript fails, is slow, or is switched off, the page is whole.
 - **The motion budget is a media query, not a runtime check.** Below 768px
@@ -103,7 +113,7 @@ are documented inline where they are defined:
 - `--color-on-accent` is Coffee Bean, not Merino. Merino on Terracotta is
   **2.42:1**; the résumé button label needs 4.5:1 and “Let's talk.” needs
   3:1. Coffee Bean is **6.38:1** — and is what the Style Guide frame
-  already shows on its own *Primary button* swatch.
+  already shows on its own _Primary button_ swatch.
 - `--color-accent-wash` is Terracotta at 10%, not 14%. At 14% the tag fill
   lifts enough to drop terracotta tag text to **4.42:1**; at 10% the same
   text reads **4.75:1** and the fill is visually indistinguishable.
@@ -151,7 +161,7 @@ Everything else in the palette passes comfortably — Sisal on Coffee Bean is
   round trip (Lighthouse measured ~156ms). JS, fonts and images stay hashed
   and immutably cacheable.
 - **Fonts are latin-subset woff2 only, preloaded.** The `@fontsource`
-  packages ship latin + latin-ext in woff2 *and* woff; every glyph this
+  packages ship latin + latin-ext in woff2 _and_ woff; every glyph this
   site renders (including é, –, ' and ©) is in latin. `font-display: swap`
   keeps text painting immediately.
 - **CLS is 0.** The portrait carries intrinsic `width`/`height`, and every
@@ -177,6 +187,95 @@ Both faces are SIL Open Font License; the licences ship in `public/fonts`.
 
 ---
 
+## Security
+
+Everything is served from one origin, which is what makes the policy below
+possible at all: no font CDN, no analytics, no icon service.
+
+### Content-Security-Policy
+
+```
+default-src 'none';           script-src 'self';
+style-src 'self' 'sha256-…';  img-src 'self';
+font-src 'self';              connect-src 'none';
+base-uri 'none';              form-action 'none';
+frame-ancestors 'none';       object-src 'none';
+upgrade-insecure-requests
+```
+
+No `'unsafe-inline'` and no `'unsafe-eval'`, anywhere:
+
+- **Scripts** are one same-origin module. The Vue _runtime-only_ build ships,
+  so there is no runtime template compilation and therefore no need for
+  `'unsafe-eval'`.
+- **Styles** are inlined into `index.html` for the first paint, so they are
+  allowed by their own **sha256 hash** rather than by `'unsafe-inline'`.
+  Vue's `:style` bindings write through the CSSOM, which CSP does not
+  govern, so no `style-src-attr` exemption is needed either.
+
+#### The hash cannot go stale
+
+A stale hash would mean a deployed site with **no styles at all**, so the
+check lives inside the build. `vite.config.ts` recomputes the hash on every
+build and compares it with `vercel.json`; a mismatch **fails the build**.
+Vercel runs `npm run build`, so a forgotten sync fails the deploy loudly
+instead of shipping a broken page.
+
+When the CSS changes:
+
+```bash
+npm run csp:sync   # rebuilds and rewrites the hash in vercel.json
+git add vercel.json
+```
+
+### Other headers
+
+| Header                         | Value                                           |
+| ------------------------------ | ----------------------------------------------- |
+| `Strict-Transport-Security`    | `max-age=63072000; includeSubDomains; preload`  |
+| `X-Content-Type-Options`       | `nosniff`                                       |
+| `X-Frame-Options`              | `DENY` (belt and braces with `frame-ancestors`) |
+| `Referrer-Policy`              | `strict-origin-when-cross-origin`               |
+| `Cross-Origin-Opener-Policy`   | `same-origin`                                   |
+| `Cross-Origin-Resource-Policy` | `same-origin`                                   |
+| `X-DNS-Prefetch-Control`       | `off`                                           |
+| `Permissions-Policy`           | every powerful feature denied                   |
+
+`Cross-Origin-Embedder-Policy` is deliberately **not** set. It would buy
+cross-origin isolation this site has no use for, and it is the header most
+likely to silently break a future embed.
+
+### Caching
+
+`index.html` is `max-age=0, must-revalidate` — it carries the inlined CSS,
+so it must never be served stale. Hashed assets are `immutable` for a year.
+`/fonts/*` is immutable too, which means **replacing a font requires
+renaming the file**; the filenames are stable by design so they can be
+preloaded.
+
+---
+
+## Quality gates
+
+`npm run audit:a11y` (and CI, on every push) serves `dist/` with the exact
+headers from `vercel.json` and fails on any of:
+
+- a **CSP violation** or a console error — the policy is tested as served,
+  not as written
+- an **axe-core** violation
+- a **contrast failure**, measured against the _composited_ background
+  rather than the declared colour
+- **horizontal overflow**
+
+…at 320, 390, 768, 1024 and 1440px. Current run: 0 CSP violations, 0 axe
+violations, 0 of 30 contrast pairs failing, no overflow, at every width.
+
+The CI workflow additionally runs lint, formatting, type-check, the build
+(which enforces the CSP hash) and `npm audit --audit-level=high`, and
+re-runs weekly so dependency rot surfaces without anyone touching the code.
+
+---
+
 ## Build steps
 
 | Step | Scope                         | Status      |
@@ -184,8 +283,8 @@ Both faces are SIL Open Font License; the licences ship in `public/fonts`.
 | 0    | Animation scope + mock        | done        |
 | 1    | Project structure             | done        |
 | 2    | Views                         | done        |
-| 3    | Styling and animations        | this commit |
-| 4    | Security hardening for Vercel | next        |
+| 3    | Styling and animations        | done        |
+| 4    | Security hardening for Vercel | this commit |
 
 The agreed motion spec lives in [`docs/motion-spec.md`](docs/motion-spec.md).
 
@@ -193,7 +292,14 @@ The agreed motion spec lives in [`docs/motion-spec.md`](docs/motion-spec.md).
 
 ## Still needed
 
-- `public/og-image.png` — 1200×630 social preview card.
-- `public/apple-touch-icon.png` — 180×180.
 - The real domain, if it is not `nehaparmar.vercel.app` — set `SITE_URL` in
   `vite.config.ts` (or the `VITE_SITE_URL` environment variable in Vercel).
+  The canonical link, Open Graph tags, `robots.txt` and `sitemap.xml` all
+  follow it.
+
+### Regenerating the social card
+
+`public/og-image.png` (1200×630) and `public/apple-touch-icon.png` (180×180)
+are rendered from the site's own tokens and typefaces rather than drawn by
+hand, so they cannot drift from the design. The source templates live in
+`docs/social/`.

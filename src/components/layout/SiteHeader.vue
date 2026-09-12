@@ -64,7 +64,7 @@ onBeforeUnmount(() => {
 
 <template>
   <header class="sticky top-0 z-50 border-b border-hairline-soft bg-ground">
-    <div class="shell flex items-center justify-between py-[26px]">
+    <div class="shell shell-bleed flex items-center justify-between py-[26px]">
       <a href="#top" class="font-display text-[1.375rem] leading-none text-accent">
         {{ profile.monogram }}
       </a>
@@ -109,7 +109,7 @@ onBeforeUnmount(() => {
       ref="panel"
       class="menu-panel border-t border-hairline bg-ground md:hidden"
     >
-      <nav class="shell flex flex-col py-3" aria-label="Primary, mobile">
+      <nav class="shell shell-bleed flex flex-col py-3" aria-label="Primary, mobile">
         <a
           v-for="(item, index) in nav"
           :key="item.href"

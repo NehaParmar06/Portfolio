@@ -1,5 +1,12 @@
 @import 'tailwindcss';
 
+/* Tailwind scans the whole repo for class names, which means a stray HTML
+   file in docs/ can add utilities to the production stylesheet — the
+   social-card templates did exactly that, growing it by 30 bytes and
+   invalidating the CSP style hash. Documentation is not a source of truth
+   for what the site renders. */
+@source not '../../../docs';
+
 @import './fonts.css';
 @import './motion.css';
 
@@ -40,8 +47,7 @@
 
   /* Type — Figma "font family/*" */
   --font-display: 'Caprasimo', 'Bookman Old Style', Georgia, serif;
-  --font-sans:
-    'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-sans: 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
 
   /* Type scale — Figma "font size/*" paired with its exact line height */
   --text-display: 4.75rem; /* 76 / 79.8 · hero name */
@@ -142,6 +148,14 @@
     .shell {
       padding-inline: 3.5rem;
     }
+  }
+
+  /* Same gutters, no measure. For bands that should reach the viewport
+     edges rather than sit inside the content band — the header, so the
+     wordmark and the nav stay pinned to opposite sides of the screen on
+     displays wider than the 1920 comp. */
+  .shell-bleed {
+    max-width: none;
   }
 
   /* Uppercase tracked label — the eyebrow above the name, the "About" and

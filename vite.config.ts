@@ -4,6 +4,14 @@ import tailwindcss from '@tailwindcss/vite'
 import vue from '@vitejs/plugin-vue'
 import { defineConfig, type Plugin } from 'vite'
 
+import {
+  buildCsp,
+  currentCsp,
+  hashInlineStyle,
+  readVercelConfig,
+  writeCsp,
+} from './scripts/csp.ts'
+
 /**
  * The canonical origin. Referenced by the canonical link, the Open Graph
  * tags, robots.txt and sitemap.xml — all generated from this one value, so
@@ -83,9 +91,54 @@ function inlineStylesheet(): Plugin {
   }
 }
 
+/**
+ * Keeps the CSP's style hash honest.
+ *
+ * The stylesheet is inlined, so `style-src` allows it by sha256 rather than
+ * by `'unsafe-inline'`. That hash changes whenever the CSS changes, and a
+ * stale hash would mean a deployed site with no styles at all — so the
+ * check lives *inside the build*: Vercel runs `npm run build`, and a
+ * mismatch fails the deploy loudly instead of shipping a broken page.
+ *
+ * `npm run csp:sync` re-runs the build with CSP_SYNC=1, which rewrites
+ * vercel.json instead of throwing. Commit the result.
+ */
+function cspStyleHash(): Plugin {
+  return {
+    name: 'csp-style-hash',
+    apply: 'build',
+    enforce: 'post',
+    transformIndexHtml: {
+      order: 'post',
+      handler(html) {
+        const expected = buildCsp(hashInlineStyle(html))
+        const config = readVercelConfig()
+        const header = currentCsp(config)
+
+        if (process.env.CSP_SYNC === '1') {
+          if (header.value !== expected) {
+            writeCsp(config, expected)
+            this.info?.('csp: vercel.json updated with the new style hash')
+          }
+          return html
+        }
+
+        if (header.value !== expected) {
+          this.error(
+            'csp: the Content-Security-Policy in vercel.json does not match the built ' +
+              'stylesheet. Run `npm run csp:sync` and commit vercel.json.\n\n' +
+              `  expected: ${expected}\n  found:    ${header.value}\n`,
+          )
+        }
+        return html
+      },
+    },
+  }
+}
+
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [vue(), tailwindcss(), siteUrl(), seoFiles(), inlineStylesheet()],
+  plugins: [vue(), tailwindcss(), siteUrl(), seoFiles(), inlineStylesheet(), cspStyleHash()],
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),

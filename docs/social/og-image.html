@@ -1,0 +1,102 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      @font-face {
+        font-family: 'Caprasimo';
+        src: url('caprasimo.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Figtree';
+        src: url('figtree.woff2') format('woff2-variations');
+        font-weight: 400 700;
+      }
+      * {
+        margin: 0;
+        box-sizing: border-box;
+      }
+      body {
+        width: 1200px;
+        height: 630px;
+        background: #2b1810;
+        font-family: 'Figtree', sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 84px;
+        position: relative;
+        overflow: hidden;
+      }
+      /* Same hairline band the stat row uses, as a quiet base rule. */
+      .band {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 14px;
+        background: #e08a4f;
+      }
+      .mark {
+        position: absolute;
+        top: 56px;
+        right: 84px;
+        font-family: 'Caprasimo';
+        font-size: 34px;
+        color: #e08a4f;
+      }
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+        font-size: 19px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: #e08a4f;
+        margin-bottom: 34px;
+      }
+      .eyebrow i {
+        display: block;
+        width: 64px;
+        height: 3px;
+        background: #e08a4f;
+      }
+      h1 {
+        font-family: 'Caprasimo';
+        font-weight: 400;
+        font-size: 104px;
+        line-height: 1.02;
+        letter-spacing: -0.0084em;
+        color: #f9f4ed;
+      }
+      h2 {
+        font-family: 'Caprasimo';
+        font-weight: 400;
+        font-size: 54px;
+        line-height: 1.1;
+        letter-spacing: -0.0084em;
+        color: #f9f4ed;
+        margin-top: 6px;
+      }
+      h2 span {
+        color: #e08a4f;
+      }
+      p {
+        margin-top: 34px;
+        font-size: 25px;
+        line-height: 1.5;
+        color: #dcd3c4;
+        max-width: 46ch;
+      }
+    </style>
+  </head>
+  <body>
+    <span class="mark">np.</span>
+    <p class="eyebrow"><i></i> Frontend &amp; UI/UX Engineer</p>
+    <h1>Neha Parmar</h1>
+    <h2>turning complex data into <span>clarity.</span></h2>
+    <p>Vue.js and TypeScript · data-rich products across supply chain and finance</p>
+    <span class="band"></span>
+  </body>
+</html>
