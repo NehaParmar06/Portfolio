@@ -2,6 +2,7 @@ import type { NavItem, Profile, Stat } from '@/types/content'
 
 export const profile: Profile = {
   name: 'Neha Parmar',
+  monogram: 'np.',
   role: 'Frontend & UI/UX Engineer',
   headline: {
     lead: 'turning complex data into',

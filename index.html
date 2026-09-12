@@ -12,7 +12,24 @@
     <meta name="author" content="Neha Parmar" />
     <meta name="theme-color" content="#2b1810" />
     <meta name="color-scheme" content="dark" />
-    <link rel="canonical" href="https://nehaparmar.vercel.app/" />
+    <link rel="canonical" href="%SITE_URL%/" />
+
+    <!-- Both faces are needed above the fold, and neither is discoverable
+         until the CSS parses, so they are fetched in parallel with it. -->
+    <link
+      rel="preload"
+      href="/fonts/figtree-latin-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/caprasimo-latin-400-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
@@ -23,7 +40,8 @@
       property="og:description"
       content="Turning complex data into clarity. 10 years of Vue.js and TypeScript across supply chain and financial services."
     />
-    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:url" content="%SITE_URL%/" />
+    <meta property="og:image" content="%SITE_URL%/og-image.png" />
     <meta name="twitter:card" content="summary_large_image" />
 
     <!-- Referrer is never needed by anything this site links to. -->

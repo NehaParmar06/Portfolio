@@ -21,7 +21,11 @@ export const caseStudies: CaseStudy[] = [
       outcome:
         'Customers book and receive confirmation instantly, without a rep in the loop. AI-augmented workflows through the build cut delivery time roughly in half, and the feature shipped with coverage held above 95%.',
     },
-    tags: ['Vue.js', 'TypeScript', '50% faster delivery'],
+    tags: [
+      { label: 'Vue.js', tone: 'tech' },
+      { label: 'TypeScript', tone: 'tech' },
+      { label: '50% faster delivery', tone: 'context' },
+    ],
   },
   {
     id: 'starlight',
@@ -38,7 +42,11 @@ export const caseStudies: CaseStudy[] = [
       outcome:
         'Banks onboard customers end to end online, with no branch visit, on a flow built to financial-services compliance and scale requirements.',
     },
-    tags: ['Angular 2', 'TypeScript', 'Fintech'],
+    tags: [
+      { label: 'Angular 2', tone: 'tech' },
+      { label: 'TypeScript', tone: 'tech' },
+      { label: 'Fintech', tone: 'context' },
+    ],
   },
   {
     id: 'title-escrow',
@@ -55,7 +63,11 @@ export const caseStudies: CaseStudy[] = [
       outcome:
         'Customers place orders directly off a property search result, with no rep contact needed.',
     },
-    tags: ['AngularJS', 'Angular 2', 'Proptech'],
+    tags: [
+      { label: 'AngularJS', tone: 'tech' },
+      { label: 'Angular 2', tone: 'tech' },
+      { label: 'Proptech', tone: 'context' },
+    ],
   },
   {
     id: 'property-search',
@@ -71,7 +83,11 @@ export const caseStudies: CaseStudy[] = [
         'I built one shared component pattern in Ionic 3 and AngularJS — search, filters and listing detail — themed per brand, so a change to the search experience landed everywhere at once.',
       outcome: 'All 14 apps delivered solo inside a year, with a consistent experience across every brand.',
     },
-    tags: ['Ionic 3', 'AngularJS', 'Solo build, 14 apps'],
+    tags: [
+      { label: 'Ionic 3', tone: 'tech' },
+      { label: 'AngularJS', tone: 'tech' },
+      { label: 'Solo build, 14 apps', tone: 'context' },
+    ],
   },
   {
     id: 'facilities-feedback',
@@ -88,6 +104,9 @@ export const caseStudies: CaseStudy[] = [
       outcome:
         'Shipped to employees across sites and used to surface and track recurring facility issues.',
     },
-    tags: ['AngularJS', 'Internal tool'],
+    tags: [
+      { label: 'AngularJS', tone: 'tech' },
+      { label: 'Internal tool', tone: 'context' },
+    ],
   },
 ]

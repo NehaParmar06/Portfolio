@@ -8,6 +8,8 @@
 
 export interface Profile {
   name: string
+  /** The wordmark in the header. */
+  monogram: string
   /** Eyebrow above the name. */
   role: string
   /** Hero sub-headline, split so the accent word can be styled on its own. */
@@ -33,6 +35,18 @@ export interface Role {
   summary: string
 }
 
+/**
+ * Tags carry two meanings in the comp, not one: the technology tags are
+ * terracotta, the outcome/context tag is neutral. Encoding that here keeps
+ * the distinction in the content rather than in a positional CSS rule.
+ */
+export type TagTone = 'tech' | 'context'
+
+export interface Tag {
+  label: string
+  tone: TagTone
+}
+
 export interface CaseStudy {
   /** Stable slug — used as the DOM id and the expand/collapse key. */
   id: string
@@ -47,7 +61,7 @@ export interface CaseStudy {
     approach: string
     outcome: string
   }
-  tags: string[]
+  tags: Tag[]
 }
 
 export interface AboutContent {
@@ -62,7 +76,7 @@ export interface AboutContent {
   }
 }
 
-export type SocialKind = 'email' | 'linkedin' | 'github'
+export type SocialKind = 'linkedin' | 'github' | 'figma'
 
 export interface SocialLink {
   kind: SocialKind
@@ -74,6 +88,7 @@ export interface SocialLink {
 export interface ContactContent {
   heading: string
   body: string
+  /** Profile links, rendered as icons. The email is shown as text. */
   links: SocialLink[]
 }
 

@@ -25,8 +25,10 @@ export const about: AboutContent = {
   ],
   portrait: {
     src: portrait,
-    srcSet: `${portrait} 1x, ${portrait2x} 2x`,
-    webp: `${portraitWebp} 1x, ${portraitWebp2x} 2x`,
+    // Width descriptors, not 1x/2x — they pair with the `sizes` attribute so
+    // the browser can pick the right file for the rendered box.
+    srcSet: `${portrait} 280w, ${portrait2x} 560w`,
+    webp: `${portraitWebp} 280w, ${portraitWebp2x} 560w`,
     alt: 'Neha Parmar',
   },
 }

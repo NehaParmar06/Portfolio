@@ -1,0 +1,290 @@
+/*
+ * Motion — the spec locked in step 0 (docs/motion-spec.md), in CSS.
+ *
+ * Two rules govern everything here:
+ *
+ *   1. Nothing is hidden at rest. Every element's default state is its
+ *      final state; the reveal animates *from* a hidden state on the way
+ *      in. If JavaScript never runs, is slow, or is switched off, the page
+ *      is complete — there is no `opacity: 0` parked waiting on an observer.
+ *   2. The motion budget is a media query, not a runtime check. Below
+ *      768px transforms are dropped and only opacity survives; under
+ *      prefers-reduced-motion everything lands instantly. Both are enforced
+ *      once, at the bottom of this file, rather than per component.
+ */
+
+:root {
+  /* Durations */
+  --dur-fast: 300ms; /* hover and pointer states */
+  --dur-base: 550ms; /* standard reveal */
+  --dur-slow: 750ms; /* hero lines, portrait, contact panel */
+
+  /* The two curves the whole site uses */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1); /* entrances */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1); /* draws and wipes */
+
+  /* Staggers */
+  --stagger-lines: 100ms;
+  --stagger-items: 110ms;
+  --stagger-chips: 55ms;
+
+  /* Set per element by the reveal directive / inline style. */
+  --delay: 0ms;
+}
+
+/* ---------------------------------------------------------------
+   Keyframes
+   --------------------------------------------------------------- */
+@keyframes rise-in {
+  from {
+    transform: translateY(105%);
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes blur-in {
+  from {
+    opacity: 0;
+    filter: blur(12px);
+    transform: scale(1.04);
+  }
+}
+
+@keyframes draw-down {
+  from {
+    transform: scaleY(0);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.7) translateY(6px);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.06);
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes ring-draw {
+  from {
+    stroke-dashoffset: var(--ring-length);
+  }
+}
+
+/* ---------------------------------------------------------------
+   M1 · Hero entrance — curtain lift. Runs on mount, not on scroll.
+   --------------------------------------------------------------- */
+.hero-mask {
+  display: block;
+  overflow: hidden;
+}
+
+.is-entering .hero-mask > * {
+  animation: rise-in var(--dur-slow) var(--ease-out) backwards;
+  animation-delay: var(--delay);
+}
+
+.is-entering .hero-fade {
+  animation: fade-up var(--dur-base) var(--ease-out) backwards;
+  animation-delay: var(--delay);
+}
+
+/* M2 · "clarity." resolves from blur, a beat after its line lands. */
+.is-entering .hero-accent {
+  display: inline-block;
+  animation: blur-in var(--dur-slow) var(--ease-out) backwards;
+  animation-delay: calc(var(--delay) + 200ms);
+}
+
+/* ---------------------------------------------------------------
+   Scroll reveals. `v-reveal` only observes and adds .is-revealed; what
+   that means is the element's own business — add `reveal-fade` for the
+   element itself to fade up, or let it drive a descendant instead.
+   --------------------------------------------------------------- */
+.reveal-fade.is-revealed {
+  animation: fade-up var(--dur-base) var(--ease-out) backwards;
+  animation-delay: var(--delay);
+}
+
+/* M4 · Stat band — each figure rolls up into place. */
+.odometer {
+  display: block;
+  overflow: hidden;
+}
+
+.is-revealed .odometer > span {
+  display: block;
+  animation: rise-in var(--dur-base) var(--ease-out) backwards;
+  animation-delay: var(--delay);
+}
+
+/* M5 · Work experience — the spine draws, the rows follow. */
+.spine {
+  transform-origin: top;
+}
+
+.is-revealed .spine {
+  animation: draw-down var(--dur-slow) var(--ease-in-out) backwards;
+}
+
+/* M8 · Tag chips pop in. */
+.is-revealed .chip {
+  animation: pop-in 450ms var(--ease-out) backwards;
+  animation-delay: calc(var(--delay) + var(--i, 0) * var(--stagger-chips));
+}
+
+/* M9 · About — the ring draws, then the portrait arrives. */
+.portrait-ring circle {
+  stroke-dasharray: var(--ring-length);
+}
+
+.is-revealed .portrait-ring circle {
+  animation: ring-draw var(--dur-slow) var(--ease-in-out) backwards;
+}
+
+.is-revealed .portrait-image {
+  animation: fade-in var(--dur-base) ease backwards;
+  animation-delay: 350ms;
+}
+
+/* M10 · Contact panel scales in; its content follows. */
+.is-revealed .contact-panel {
+  animation: scale-in var(--dur-slow) var(--ease-out) backwards;
+}
+
+.is-revealed .contact-content > * {
+  animation: fade-up var(--dur-base) var(--ease-out) backwards;
+  animation-delay: calc(250ms + var(--i, 0) * 100ms);
+}
+
+/* ---------------------------------------------------------------
+   M11 · Links and buttons — underline sweeps in from the left,
+   out to the right. Focus gets the same treatment as hover.
+   --------------------------------------------------------------- */
+.sweep {
+  position: relative;
+}
+
+.sweep::after {
+  content: '';
+  position: absolute;
+  inset-inline: 0;
+  bottom: -3px;
+  height: 1px;
+  background-color: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 380ms var(--ease-out);
+}
+
+.sweep:hover::after,
+.sweep:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ---------------------------------------------------------------
+   M7 · Case-study card hover — lift, border warms, chevron nudges.
+   Pointer-only: a touch device has no hover state to show.
+   --------------------------------------------------------------- */
+@media (hover: hover) and (pointer: fine) {
+  .case-card {
+    transition:
+      transform var(--dur-fast) var(--ease-out),
+      border-color var(--dur-fast) ease;
+  }
+
+  .case-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .case-card:hover .case-chevron {
+    transform: translateY(3px);
+  }
+}
+
+.case-chevron {
+  transition: transform var(--dur-fast) var(--ease-out);
+}
+
+.case-card:has(:focus-visible) {
+  border-color: var(--color-accent);
+}
+
+/* M13 · Mobile menu — fade and scale, links stagger in behind it. */
+.menu-panel {
+  transform-origin: top center;
+  animation: scale-in 450ms var(--ease-out) backwards;
+}
+
+.menu-panel a {
+  animation: fade-up 300ms var(--ease-out) backwards;
+  animation-delay: calc(120ms + var(--i, 0) * 60ms);
+}
+
+/* ---------------------------------------------------------------
+   The motion budget.
+
+   Below 768px: opacity only. Phones get the information, not the
+   choreography — no transforms, no blur, no masked lines.
+   --------------------------------------------------------------- */
+@media (width < 48rem) {
+  .is-entering .hero-mask > *,
+  .is-entering .hero-fade,
+  .is-entering .hero-accent,
+  .reveal-fade.is-revealed,
+  .is-revealed .odometer > span,
+  .is-revealed .chip,
+  .is-revealed .contact-panel,
+  .is-revealed .contact-content > *,
+  .is-revealed .portrait-image,
+  .menu-panel,
+  .menu-panel a {
+    animation-name: fade-in;
+    animation-duration: 300ms;
+    animation-timing-function: ease;
+  }
+
+  .is-revealed .spine,
+  .is-revealed .portrait-ring circle {
+    animation: none;
+  }
+
+  .hero-mask {
+    overflow: visible;
+  }
+}
+
+/* Reduced motion wins over everything above. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}

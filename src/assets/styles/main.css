@@ -1,13 +1,14 @@
 @import 'tailwindcss';
 
-/* Self-hosted so the site makes no third-party font requests.
-   Keeps the step-4 CSP tight: no fonts.googleapis.com, no fonts.gstatic.com. */
-@import '@fontsource/caprasimo/400.css';
-@import '@fontsource-variable/figtree/wght.css';
+@import './fonts.css';
+@import './motion.css';
 
 /* ---------------------------------------------------------------
-   Design tokens — mapped 1:1 from the Figma variables in
+   Design tokens — mapped from the Figma variables in
    Portfolio.fig › Style Guide. Figma name is noted beside each.
+
+   Two values deliberately differ from the comp, both for contrast:
+   see the notes on --color-accent-wash and --color-on-accent.
    --------------------------------------------------------------- */
 @theme {
   /* Colour — Figma "color/*" collection */
@@ -15,52 +16,67 @@
   --color-panel: #3a2117; /* Tamarind     · color/orange/16 · cards, about band */
   --color-panel-raised: #452a1d; /* derived           · hover fill for panels */
   --color-accent: #e08a4f; /* Terracotta   · color/orange/59 */
-  --color-accent-ink: #2b1810; /* text that sits ON terracotta */
   --color-ink: #f9f4ed; /* Merino       · color/grey/95 · headings */
   --color-body: #dcd3c4; /* Sisal        · color/orange/82 · body copy */
   --color-body-dim: #c0b6a5; /* Bison Hide   · color/orange/70 */
   --color-muted: #a19786; /* Zorba        · color/orange/58 · labels, captions */
 
+  /* Text that sits ON the terracotta fill.
+     The comp uses Merino here, which is 2.42:1 — below the 4.5:1 WCAG AA
+     needs for the résumé label and the 3:1 large text needs for "Let's
+     talk.". Coffee Bean is 6.38:1 and is already the colour the comp uses
+     for the paragraph inside that same panel. */
+  --color-on-accent: #2b1810;
+
   /* Hairlines — Figma "color/grey/95 N%" */
   --color-hairline: rgb(249 244 237 / 0.12); /* Merino 12% · default rule */
   --color-hairline-soft: rgb(249 244 237 / 0.08); /* Merino 8%  */
   --color-hairline-strong: rgb(249 244 237 / 0.18); /* Merino 18% */
-  --color-accent-wash: rgb(224 138 79 / 0.14); /* Terracotta 14% · tag fill */
+
+  /* Tag fill. The comp specifies Terracotta 14%, which lifts the tag
+     ground enough to drop terracotta text to 4.42:1. At 10% the same
+     text reads 4.75:1 and the fill is visually indistinguishable. */
+  --color-accent-wash: rgb(224 138 79 / 0.1);
 
   /* Type — Figma "font family/*" */
   --font-display: 'Caprasimo', 'Bookman Old Style', Georgia, serif;
   --font-sans:
-    'Figtree Variable', 'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui,
-    sans-serif;
+    'Figtree', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
 
-  /* Type scale — Figma "font size/*" paired with its line height */
+  /* Type scale — Figma "font size/*" paired with its exact line height */
   --text-display: 4.75rem; /* 76 / 79.8 · hero name */
-  --text-display--line-height: 1.05;
-  --text-h1: 2.5rem; /* 40 / 42   · hero sub-line */
-  --text-h1--line-height: 1.05;
-  --text-h2: 2rem; /* 32        · section headings */
-  --text-h2--line-height: 1.2;
-  --text-h3: 1.375rem; /* 22        · case-study titles */
-  --text-h3--line-height: 1.25;
+  --text-display--line-height: 4.9875rem;
+  --text-h1: 2.5rem; /* 40 / 42   · hero sub-line, "Let's talk." */
+  --text-h1--line-height: 2.625rem;
+  --text-h2: 2.25rem; /* 36        · "Selected work" */
+  --text-h2--line-height: 1.15;
+  --text-h3: 2rem; /* 32        · "Work Experience", case-study titles */
+  --text-h3--line-height: 1.2;
   --text-lead: 1.125rem; /* 18 / 28.8 · hero paragraph */
-  --text-lead--line-height: 1.6;
-  --text-body: 1.0625rem; /* 17 / 25.5 · about paragraphs */
-  --text-body--line-height: 1.5;
-  --text-sm: 0.875rem; /* 14 / 23.8 · card copy */
-  --text-sm--line-height: 1.7;
-  --text-xs: 0.8125rem; /* 13        · captions */
+  --text-lead--line-height: 1.8rem;
+  --text-body: 1.0625rem; /* 17 / 25.5 · Focus text, role titles */
+  --text-body--line-height: 1.59375rem;
+  --text-prose: 1rem; /* 16 / 28   · about paragraphs, contact body */
+  --text-prose--line-height: 1.75rem;
+  --text-card: 0.9375rem; /* 15 / 25.5 · case-study summary */
+  --text-card--line-height: 1.59375rem;
+  --text-sm: 0.875rem; /* 14 / 23.8 · nav, role summary */
+  --text-sm--line-height: 1.4875rem;
+  --text-xs: 0.8125rem; /* 13        · stat captions, skill chips, footer */
   --text-xs--line-height: 1.5;
-  --text-label: 0.6875rem; /* 11        · eyebrows, kickers */
+  --text-tag: 0.75rem; /* 12        · case-study tags, year gutter */
+  --text-tag--line-height: 1.4;
+  --text-label: 0.6875rem; /* 11        · kickers, "Focus" */
   --text-label--line-height: 1.4;
 
-  /* Radius — Figma "corner radius/*" */
-  --radius-card: 1.25rem; /* 20px · case-study panels */
-  --radius-panel: 1.5rem; /* 24px · contact block */
-  --radius-pill: 999px; /* 999 · tags and buttons */
+  /* Tracking — Figma "letter spacing/*" */
+  --tracking-eyebrow: 0.14em; /* 1.68px at 12px */
+  --tracking-kicker: 0.14em; /* 1.54px at 11px */
+  --tracking-display: -0.0084em; /* -0.64px at 76px */
 
-  /* Motion — the two curves the whole site uses */
-  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
-  --ease-in-out-quart: cubic-bezier(0.65, 0, 0.35, 1);
+  /* Radius — Figma "corner radius/*" and "item spacing/28" */
+  --radius-card: 1.75rem; /* 28px · case-study panels, contact block */
+  --radius-pill: 999px; /* 999  · tags and buttons */
 }
 
 /* ---------------------------------------------------------------
@@ -92,12 +108,17 @@
 
   ::selection {
     background-color: var(--color-accent);
-    color: var(--color-accent-ink);
+    color: var(--color-on-accent);
   }
 
+  /* A two-tone focus ring. A single colour cannot clear 3:1 against both
+     the espresso ground and the terracotta panel; an inner Coffee Bean
+     ring and an outer Merino ring means one of the two always reads
+     (6.38:1 on terracotta, 15.47:1 on the ground). */
   :focus-visible {
-    outline: 2px solid var(--color-accent);
-    outline-offset: 3px;
+    outline: 2px solid var(--color-ground);
+    outline-offset: 2px;
+    box-shadow: 0 0 0 4px var(--color-ink);
     border-radius: 4px;
   }
 
@@ -108,10 +129,11 @@
 }
 
 @layer components {
-  /* The page's single content measure — one place, not per-section. */
+  /* The page's single content measure — one place, not per-section.
+     The comp is 1920 wide with 56px gutters, so the content band is 1808. */
   .shell {
     width: 100%;
-    max-width: 90rem;
+    max-width: 120rem;
     margin-inline: auto;
     padding-inline: 1.25rem;
   }
@@ -121,20 +143,22 @@
       padding-inline: 3.5rem;
     }
   }
-}
 
-/* ---------------------------------------------------------------
-   Global motion rule (step 3 builds on this)
-   Nothing is hidden at rest. If JS never runs, or the visitor has
-   reduced motion on, the page is still complete.
-   --------------------------------------------------------------- */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-    scroll-behavior: auto !important;
+  /* Uppercase tracked label — the eyebrow above the name, the "About" and
+     "Focus" markers, and every case-study kicker. */
+  .eyebrow {
+    font-size: var(--text-tag);
+    font-weight: 600;
+    letter-spacing: var(--tracking-eyebrow);
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  .kicker {
+    font-size: var(--text-label);
+    font-weight: 600;
+    letter-spacing: var(--tracking-kicker);
+    text-transform: uppercase;
+    line-height: 1.3;
   }
 }
