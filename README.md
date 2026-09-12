@@ -60,7 +60,7 @@ src/
   `minimal` (below 768px) or `none` (`prefers-reduced-motion`). Animations
   ask it before they do anything, so the motion budget is changed in one
   place rather than audited across twenty components.
-- **Nothing is hidden at rest.** Reveals animate *from* a visible state. If
+- **Nothing is hidden at rest.** Reveals animate _from_ a visible state. If
   JavaScript fails, is slow, or is switched off, the page is still whole.
 - **No third-party runtime requests.** Fonts are self-hosted via
   `@fontsource`, icons come from `lucide-vue-next` as inlined SVG. That lets
@@ -73,30 +73,30 @@ src/
 Tokens in `src/assets/styles/main.css` map 1:1 to the Figma variables, with
 the Figma name in a comment beside each one.
 
-| Token                     | Figma        | Value     |
-| ------------------------- | ------------ | --------- |
-| `--color-ground`          | Coffee Bean  | `#2B1810` |
-| `--color-panel`           | Tamarind     | `#3A2117` |
-| `--color-accent`          | Terracotta   | `#E08A4F` |
-| `--color-ink`             | Merino       | `#F9F4ED` |
-| `--color-body`            | Sisal        | `#DCD3C4` |
-| `--color-body-dim`        | Bison Hide   | `#C0B6A5` |
-| `--color-muted`           | Zorba        | `#A19786` |
-| `--color-hairline`        | Merino 12%   | —         |
-| `--font-display`          | Caprasimo    | —         |
-| `--font-sans`             | Figtree      | —         |
+| Token              | Figma       | Value     |
+| ------------------ | ----------- | --------- |
+| `--color-ground`   | Coffee Bean | `#2B1810` |
+| `--color-panel`    | Tamarind    | `#3A2117` |
+| `--color-accent`   | Terracotta  | `#E08A4F` |
+| `--color-ink`      | Merino      | `#F9F4ED` |
+| `--color-body`     | Sisal       | `#DCD3C4` |
+| `--color-body-dim` | Bison Hide  | `#C0B6A5` |
+| `--color-muted`    | Zorba       | `#A19786` |
+| `--color-hairline` | Merino 12%  | —         |
+| `--font-display`   | Caprasimo   | —         |
+| `--font-sans`      | Figtree     | —         |
 
 ---
 
 ## Build steps
 
-| Step | Scope                             | Status         |
-| ---- | --------------------------------- | -------------- |
-| 0    | Animation scope + mock            | done           |
-| 1    | Project structure                 | this commit    |
-| 2    | Views                             | next           |
-| 3    | Styling and animations            | —              |
-| 4    | Security hardening for Vercel     | —              |
+| Step | Scope                         | Status      |
+| ---- | ----------------------------- | ----------- |
+| 0    | Animation scope + mock        | done        |
+| 1    | Project structure             | this commit |
+| 2    | Views                         | next        |
+| 3    | Styling and animations        | —           |
+| 4    | Security hardening for Vercel | —           |
 
 The agreed motion spec lives in [`docs/motion-spec.md`](docs/motion-spec.md).
 
