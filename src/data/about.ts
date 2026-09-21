@@ -9,19 +9,28 @@ export const about: AboutContent = {
   label: 'About',
   paragraphs: [
     "I build things for the web, but what really interests me is solving the problem behind what we're building.",
-    "I'm a Frontend & UI/UX Engineer with 10 years of experience building complex, data-rich products with Vue.js, TypeScript, and JavaScript, primarily across supply chain and financial services.",
-    'I own problems end to end—from discovery and architecture to shipping, learning, and making things better. I care about simplicity, scalability, and experiences that actually work for people.',
-    "And I believe great engineers don't just write better code—they make the people around them better. I enjoy mentoring, collaborating, and sharing what I learn along the way.",
-    "Currently, I'm expanding into React, Node.js, cloud, and AI—because great products need engineers who can think beyond the frontend.",
+    'Ten years of frontend engineering across logistics and financial services taught me that the hardest part is rarely the code. It is deciding what to ship, in what order, and what to leave out of the first version.',
+    'So that is the work I gravitated towards: gathering requirements from stakeholders, validating prototypes with UX before development starts, refining and estimating a backlog, and carrying features through pre-prod, QA and release. I am now moving that ownership into a dedicated Technical Product Manager role.',
+    'The engineering depth does not go away — it is the reason I can sit in a design review and judge a usability trade-off, or spot a state-management defect before it reaches a customer. A Google UX Design certificate sharpened the first half of that.',
+    "And I believe great teams don't just ship better software—they make the people in them better. I enjoy mentoring, collaborating, and sharing what I learn along the way.",
   ],
+  // Ordered product-first, then engineering: the sequence itself says which
+  // half leads, without needing a label to announce it. Every product chip
+  // maps to a line in the résumé's Core Competencies — same rule as the
+  // stat band, so nothing here is aspirational.
   skills: [
+    'Requirement gathering',
+    'Story refinement',
+    'Backlog & estimation',
+    'Prototype sign-off',
+    'Scrum delivery',
+    'Release risk mitigation',
+    'UI/UX design',
     'JavaScript',
     'TypeScript',
     'Vue.js',
     'Angular',
-    'Jest / E2E',
-    'Copilot / Claude',
-    'Figma',
+    'Claude Code / Copilot',
   ],
   portrait: {
     src: portrait,

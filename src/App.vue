@@ -3,6 +3,7 @@ import SiteFooter from '@/components/layout/SiteFooter.vue'
 import SiteHeader from '@/components/layout/SiteHeader.vue'
 import AboutSection from '@/components/sections/AboutSection.vue'
 import ContactSection from '@/components/sections/ContactSection.vue'
+import EducationBand from '@/components/sections/EducationBand.vue'
 import ExperienceSection from '@/components/sections/ExperienceSection.vue'
 import HeroSection from '@/components/sections/HeroSection.vue'
 import SelectedWork from '@/components/sections/SelectedWork.vue'
@@ -25,6 +26,7 @@ import StatBand from '@/components/sections/StatBand.vue'
     <ExperienceSection />
     <SelectedWork />
     <AboutSection />
+    <EducationBand />
     <ContactSection />
   </main>
 

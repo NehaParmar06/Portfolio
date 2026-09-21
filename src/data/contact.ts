@@ -17,7 +17,7 @@ export const emailHref = (): string => `mailto:${emailAddress()}`
 
 export const contact: ContactContent = {
   heading: "Let's talk.",
-  body: "If you're building something interesting, solving a tricky problem, or looking for someone to build with — say hello.",
+  body: "If you're building something interesting, solving a tricky problem, or looking for someone to see it through — say hello.",
   links: [
     {
       kind: 'linkedin',

@@ -96,3 +96,12 @@ export interface NavItem {
   label: string
   href: string
 }
+
+export interface Credential {
+  /** e.g. "Google UX Design Professional Certificate" */
+  title: string
+  institution: string
+  year: string
+  /** Optional one-line note on what it covered. */
+  note?: string
+}
