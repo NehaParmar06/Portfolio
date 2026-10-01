@@ -104,4 +104,18 @@ export interface Credential {
   year: string
   /** Optional one-line note on what it covered. */
   note?: string
+  /**
+   * Public verification page, where one exists — a Credly badge for the
+   * certificates. Degrees have no such page, so this is optional rather
+   * than required: the band renders a plain heading when it is absent and
+   * never a dead link.
+   */
+  href?: string
+  /**
+   * The issuer's badge artwork, bundled rather than hot-linked: `img-src`
+   * is `'self'`, so a Credly URL here would simply not render — and would
+   * hand a third party a request log of everyone who reads the page.
+   * Decorative, because the title beside it already names the credential.
+   */
+  badge?: string
 }
